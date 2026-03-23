@@ -1,0 +1,57 @@
+{
+  "name": "SPORTVAULT — Full Stack",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+
+  // Install root + client deps on container creation
+  "postCreateCommand": "npm run install:all",
+
+  // Auto-start both servers when the Codespace opens
+  "postStartCommand": "npm run dev",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "mongodb.mongodb-vscode",
+        "csstools.postcss",
+        "ms-vscode.vscode-js-profile-flame",
+        "formulahendry.auto-rename-tag",
+        "christian-kohler.path-intellisense"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2,
+        "tailwindCSS.includeLanguages": { "javascript": "javascript", "javascriptreact": "javascriptreact" },
+        "files.associations": { "*.jsx": "javascriptreact" }
+      }
+    }
+  },
+
+  // Forward both the Vite dev server and Express API
+  "forwardPorts": [5173, 3000],
+  "portsAttributes": {
+    "5173": {
+      "label": "React (Vite)",
+      "onAutoForward": "openBrowser",
+      "protocol": "http"
+    },
+    "3000": {
+      "label": "Express API",
+      "onAutoForward": "notify",
+      "protocol": "http"
+    }
+  },
+
+  // Mount node_modules as a volume so installs persist between rebuilds
+  "mounts": [
+    "source=sportvault-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=sportvault-client-node-modules,target=${containerWorkspaceFolder}/client/node_modules,type=volume"
+  ],
+
+  "remoteEnv": {
+    "NODE_ENV": "development"
+  }
+}
